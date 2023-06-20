@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <algorithm>
+#include <iostream>
 
 #include "../state/state.hpp"
 #include "./minimax.hpp"
@@ -22,27 +23,26 @@ Move Minimax::get_move(State *state, int depth){
 /**
  * Running the first layer of minimax on the max player.
  * @param depth should be > 0
- * @return action leading to maximum next state value 
+ * @return action leading to minimum next state value 
  */
 Move Minimax::get_move_helper(State *state, int depth) {
-  Move max_move;
-  int max_value = -INF;
+  Move min_move;
+  int min_value = INF;
   
-  // find max_move leading to next_state with max_value
+  // NOTE: out next states are the opponent's states, so we want to find the move that leads to the minimum!!!
   for (Move action : state->legal_actions) {
     int potential_value = minimax(state->next_state(action), depth - 1, false);
-    if (potential_value > max_value) {
-      max_value = potential_value;
-      max_move = action;
+    if (potential_value <= min_value) {
+      min_value = potential_value;
+      min_move = action;
     }
   }
-  return max_move;
+  return min_move;
 }
 
 int Minimax::minimax(State *state, int depth, bool is_max_player) {
-  if (state->game_state == WIN && is_max_player) return INF;
-  if (state->game_state == WIN && !is_max_player) return -INF;
-  if (depth == 0) return state->evaluate();
+  if (state->game_state == WIN || depth == 0) 
+    return state->evaluate();
   
   if (is_max_player) { // find max value
     int max_value = -INF;
