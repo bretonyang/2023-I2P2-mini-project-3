@@ -28,22 +28,25 @@ Move Alphabeta::get_move(State *state, int depth){
 Move Alphabeta::get_move_helper(State *state, int depth) {
   int max_value = -INF; 
   int alpha = -INF; 
-  int beta = INF; // NOTE: beta in the root node is always -INF
-  std::vector<Move> potential_moves;
+  int beta = INF; // NOTE: beta in the root node is always INF
+  // std::vector<Move> potential_moves;
+  Move move;
   
   for (Move action : state->legal_actions) {
     int potential_value = alphabeta(state->next_state(action), depth - 1, alpha, beta, false);
-    if (potential_value > max_value) {
+    if (potential_value >= max_value) {
       max_value = potential_value;
-      potential_moves.clear();
-      potential_moves.push_back(action);
+      move = action;
+      // potential_moves.clear();
+      // potential_moves.push_back(action);
     }
-    else if (potential_value == max_value) {
-      potential_moves.push_back(action);
-    }
+    // else if (potential_value == max_value) {
+    //   potential_moves.push_back(action);
+    // }
     alpha = std::max(alpha, max_value);
   }
-  return potential_moves[(rand() + depth) % potential_moves.size()];
+  // return potential_moves[(rand() + depth) % potential_moves.size()];
+  return move;
 }
 
 int Alphabeta::alphabeta(State *state, int depth, int alpha, int beta, bool is_max_player) {
