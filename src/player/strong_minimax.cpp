@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 #include "../config.hpp"
 #include "../state/state.hpp"
-#include "../policy/minimax.hpp"
+#include "../policy/strong_minimax.hpp"
 
 
 State* root;
@@ -40,17 +41,17 @@ void read_board(std::ifstream& fin) {
  */
 void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
-  // output result from depth: 0, 2, 4, 6, 8, ... (if can be calculated in time)
+  // output result from depth: 3, 5, 7, ... (if can be calculated in time)
   // Reason: avoid not outputting anything after exceeding the time limit.
   int depth = 3; 
   while(true) {
-    auto move = Minimax::get_move(root, depth);
+    auto move = StrongMinimax::get_move(root, depth);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
     
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
-    // depth += 2;
+    depth += 2;
   }
 }
 
@@ -62,6 +63,8 @@ void write_valid_spot(std::ofstream& fout) {
  * @return int 
  */
 int main(int, char** argv) {
+  srand(time(0));
+  
   std::ifstream fin(argv[1]); // state
   std::ofstream fout(argv[2]); // action
 

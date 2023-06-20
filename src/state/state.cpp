@@ -13,6 +13,8 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
+  if (game_state == WIN) return INF;
+
   int value = 0;
   for(int i = 0; i < BOARD_H; i++) {
     for(int j = 0; j < BOARD_W; j++) {

@@ -1,9 +1,9 @@
 #include <cstdlib>
 #include <algorithm>
-#include <iostream>
+#include <vector>
 
 #include "../state/state.hpp"
-#include "./minimax.hpp"
+#include "./strong_minimax.hpp"
 
 
 /**
@@ -13,7 +13,7 @@
  * @param depth search depth for minimax, specified by the caller (should be > 0)
  * @return Move 
  */
-Move Minimax::get_move(State *state, int depth){
+Move StrongMinimax::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions(); 
   
@@ -25,22 +25,25 @@ Move Minimax::get_move(State *state, int depth){
  * @param depth should be > 0
  * @return action leading to minimum next state value 
  */
-Move Minimax::get_move_helper(State *state, int depth) {
-  Move max_move;
-  int max_value = -INF;
+Move StrongMinimax::get_move_helper(State *state, int depth) {
+  int max_value = -INF; 
+  std::vector<Move> potential_moves;
   
-  // NOTE: our next states are the opponent's states
   for (Move action : state->legal_actions) {
     int potential_value = minimax(state->next_state(action), depth - 1, false);
     if (potential_value > max_value) {
       max_value = potential_value;
-      max_move = action;
+      potential_moves.clear();
+      potential_moves.push_back(action);
+    }
+    else if (potential_value == max_value) {
+      potential_moves.push_back(action);
     }
   }
-  return max_move;
+  return potential_moves[(rand() + depth) % potential_moves.size()];
 }
 
-int Minimax::minimax(State *state, int depth, bool is_max_player) {
+int StrongMinimax::minimax(State *state, int depth, bool is_max_player) {
   if ((state->game_state == WIN || depth == 0) && is_max_player) 
     return state->evaluate();
   if ((state->game_state == WIN || depth == 0) && !is_max_player) 
