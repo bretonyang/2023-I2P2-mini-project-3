@@ -16,12 +16,29 @@ int State::evaluate(){
   if (game_state == WIN) return INF;
 
   int value = 0;
-  for(int i = 0; i < BOARD_H; i++) {
-    for(int j = 0; j < BOARD_W; j++) {
-      value += material_value[(int) board.board[player][i][j]];
-      value -= material_value[(int) board.board[1 - player][i][j]];
+  if (player == 0) {
+    for(int i = 0; i < BOARD_H; i++) {
+      for(int j = 0; j < BOARD_W; j++) {
+        value += white_piece_square_table[(int) board.board[player][i][j]][i][j];
+        value -= white_piece_square_table[(int) board.board[1 - player][i][j]][BOARD_H - i - 1][BOARD_W - j - 1];
+      }
     }
   }
+  else {
+    for(int i = 0; i < BOARD_H; i++) {
+      for(int j = 0; j < BOARD_W; j++) {
+        value += white_piece_square_table[(int) board.board[1 - player][i][j]][BOARD_H - i - 1][BOARD_W - j - 1];
+        value -= white_piece_square_table[(int) board.board[player][i][j]][i][j];
+      }
+    }
+  }
+  // int value = 0;
+  // for(int i = 0; i < BOARD_H; i++) {
+  //   for(int j = 0; j < BOARD_W; j++) {
+  //     value += material_value[(int) board.board[player][i][j]];
+  //     value -= material_value[(int) board.board[1 - player][i][j]];
+  //   }
+  // }
   return value;
 }
 
