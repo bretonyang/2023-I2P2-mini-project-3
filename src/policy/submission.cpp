@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../state/state.hpp"
-#include "./alphabeta.hpp"
+#include "./submission.hpp"
 
 
 /**
@@ -13,7 +13,7 @@
  * @param depth search depth for alpha beta, specified by the caller (should be > 0)
  * @return Move 
  */
-Move Alphabeta::get_move(State *state, int depth){
+Move Submission::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions(); 
   
@@ -25,7 +25,7 @@ Move Alphabeta::get_move(State *state, int depth){
  * @param depth should be > 0
  * @return action leading to minimum next state value 
  */
-Move Alphabeta::get_move_helper(State *state, int depth) {
+Move Submission::get_move_helper(State *state, int depth) {
   int max_value = -INF; 
   int alpha = -INF; 
   int beta = INF; // NOTE: beta in the root node is always INF
@@ -49,7 +49,7 @@ Move Alphabeta::get_move_helper(State *state, int depth) {
   return potential_moves[rand() % potential_moves.size()];
 }
 
-int Alphabeta::alphabeta(State *state, int depth, int alpha, int beta, bool is_max_player) {
+int Submission::alphabeta(State *state, int depth, int alpha, int beta, bool is_max_player) {
   if (state->game_state == WIN || depth == 0) {
     if (is_max_player) return state->evaluate();
     else return -(state->evaluate()); // NOTE: evaluate() returns opponent's value 
