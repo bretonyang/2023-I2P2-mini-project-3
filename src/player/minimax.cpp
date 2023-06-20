@@ -50,7 +50,7 @@ void write_valid_spot(std::ofstream& fout) {
     
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
-    // depth += 2;
+    depth += 2;
   }
 }
 

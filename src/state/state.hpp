@@ -13,7 +13,7 @@ typedef std::pair<size_t, size_t> Point;
 typedef std::pair<Point, Point> Move; // (from, to)
 
 const int INF = 1000000000; // 1e9 
-const int material_value[7] = {0, 2, 6, 7, 8, 20, 1000}; // empty, pawn, rook, knight, bishop, queen, king
+const int material_value[7] = {0, 200, 600, 700, 800, 2000, 10000}; // empty, pawn, rook, knight, bishop, queen, king
 
 // empty, pawn, rook, knight, bishop, queen, king
 const int white_piece_square_table[7][BOARD_H][BOARD_W] = {
@@ -27,11 +27,11 @@ const int white_piece_square_table[7][BOARD_H][BOARD_W] = {
     {0, 0, 0, 0, 0},
   }, {
     // pawn
-    {50, 50, 50, 50, 50},
-    {30, 30, 20, 10, 10},
-    {5, 5, 10, 10, 25},
+    {5, 5, 5, 5, 5},
+    {3, 3, 2, 1, 1},
+    {5, 5, 1, 1, 2},
     {5, -5, 0, 0, 0},
-    {5, 10, 10, -20, -20},
+    {5, 1, 1, -2, -2},
     {0, 0, 0, 0, 0},
   }, {
     // rook
@@ -119,6 +119,7 @@ class State{
     State(Board board, int player): board(board), player(player){};
     
     int evaluate();
+    int evaluate2();
     State* next_state(Move move);
     void get_legal_actions();
     std::string encode_output();

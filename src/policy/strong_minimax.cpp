@@ -45,9 +45,9 @@ Move StrongMinimax::get_move_helper(State *state, int depth) {
 
 int StrongMinimax::minimax(State *state, int depth, bool is_max_player) {
   if ((state->game_state == WIN || depth == 0) && is_max_player) 
-    return state->evaluate();
+    return state->evaluate2();
   if ((state->game_state == WIN || depth == 0) && !is_max_player) 
-    return -(state->evaluate()); // NOTE: evaluate() returns opponent's value 
+    return -(state->evaluate2()); // NOTE: evaluate() returns opponent's value 
   
   if (is_max_player) { // find max value
     int max_value = -INF;
