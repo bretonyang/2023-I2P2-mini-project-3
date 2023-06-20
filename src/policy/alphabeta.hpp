@@ -3,7 +3,7 @@
 
 
 /**
- * @brief Policy class for minimax policy, 
+ * @brief Policy class for alpha beta policy, 
  * your policy class should have get_move method
  */
 class Alphabeta{

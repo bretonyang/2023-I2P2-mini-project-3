@@ -35,7 +35,7 @@ void read_board(std::ifstream& fin) {
 
 
 /**
- * @brief randomly choose a move and then write it into output file
+ * @brief choose a move by alpha-beta pruning and then write it into output file
  * 
  * @param fout 
  */
@@ -43,7 +43,7 @@ void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
   // output result from depth: 3, 5, 7, ... (if can be calculated in time)
   // Reason: avoid not outputting anything after exceeding the time limit.
-  int depth = 4; 
+  int depth = 3; 
   while(true) {
     auto move = Alphabeta::get_move(root, depth);
     fout << move.first.first << " " << move.first.second << " "\
@@ -51,13 +51,13 @@ void write_valid_spot(std::ofstream& fout) {
     
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
-    depth += 2; 
+    depth += 2;
   }
 }
 
 
 /**
- * @brief Main function for minimax player
+ * @brief Main function for alpha-beta player
  * 
  * @param argv 
  * @return int 

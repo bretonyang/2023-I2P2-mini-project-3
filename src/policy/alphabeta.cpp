@@ -7,10 +7,10 @@
 
 
 /**
- * @brief get a legal move by minimax algorithm
+ * @brief get a legal move by alpha beta algorithm
  * 
  * @param state Now state
- * @param depth search depth for minimax, specified by the caller (should be > 0)
+ * @param depth search depth for alpha beta, specified by the caller (should be > 0)
  * @return Move 
  */
 Move Alphabeta::get_move(State *state, int depth){
@@ -21,7 +21,7 @@ Move Alphabeta::get_move(State *state, int depth){
 }
 
 /**
- * Running the first layer of minimax on the max player.
+ * Running the first layer of alpha beta on the max player.
  * @param depth should be > 0
  * @return action leading to minimum next state value 
  */
@@ -29,24 +29,24 @@ Move Alphabeta::get_move_helper(State *state, int depth) {
   int max_value = -INF; 
   int alpha = -INF; 
   int beta = INF; // NOTE: beta in the root node is always INF
-  // std::vector<Move> potential_moves;
-  Move move;
+  std::vector<Move> potential_moves;
   
   for (Move action : state->legal_actions) {
     int potential_value = alphabeta(state->next_state(action), depth - 1, alpha, beta, false);
-    if (potential_value >= max_value) {
+
+    if (potential_value > max_value) {
       max_value = potential_value;
-      move = action;
-      // potential_moves.clear();
-      // potential_moves.push_back(action);
+      potential_moves.clear();
+      potential_moves.push_back(action);
     }
-    // else if (potential_value == max_value) {
-    //   potential_moves.push_back(action);
-    // }
+    else if (potential_value == max_value) {
+      potential_moves.push_back(action);
+    }
+
     alpha = std::max(alpha, max_value);
+    if (alpha > beta) break;
   }
-  // return potential_moves[(rand() + depth) % potential_moves.size()];
-  return move;
+  return potential_moves[rand() % potential_moves.size()];
 }
 
 int Alphabeta::alphabeta(State *state, int depth, int alpha, int beta, bool is_max_player) {
@@ -60,7 +60,7 @@ int Alphabeta::alphabeta(State *state, int depth, int alpha, int beta, bool is_m
     for (Move action : state->legal_actions) {
       max_value = std::max(max_value, alphabeta(state->next_state(action), depth - 1, alpha, beta, false));
       alpha = std::max(alpha, max_value);
-      if (alpha >= beta) break; // beta cutoff
+      if (alpha > beta) break; // beta cutoff
     }
     return max_value;
   }
@@ -69,7 +69,7 @@ int Alphabeta::alphabeta(State *state, int depth, int alpha, int beta, bool is_m
     for (Move action : state->legal_actions) {
       min_value = std::min(min_value, alphabeta(state->next_state(action), depth - 1, alpha, beta, true));
       beta = std::min(beta, min_value);
-      if (beta <= alpha) break; // alpha cutoff
+      if (alpha > beta) break; // alpha cutoff
     }
     return min_value;
   }
