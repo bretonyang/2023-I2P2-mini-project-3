@@ -10,7 +10,11 @@
 
 
 typedef std::pair<size_t, size_t> Point;
-typedef std::pair<Point, Point> Move;
+typedef std::pair<Point, Point> Move; // (from, to)
+
+const int INF = 1000000000; // 1e9 
+const int material_value[] = {0, 10, 50, 32, 30, 90, 1000}; // empty, pawn, rook, knight, bishop, queen, king
+
 class Board{
   public:
     char board[2][BOARD_H][BOARD_W] = {{

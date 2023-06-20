@@ -3,7 +3,7 @@
 
 #include "../config.hpp"
 #include "../state/state.hpp"
-#include "../policy/random.hpp"
+#include "../policy/minimax.hpp"
 
 
 State* root;
@@ -40,27 +40,28 @@ void read_board(std::ifstream& fin) {
  */
 void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
+  // output result from depth: 0, 2, 4, 6, 8, ... (if can be calculated in time)
+  // Reason: avoid not outputting anything after exceeding the time limit.
+  int depth = 3; // FIXME: change to 0
   while(true) {
-    // Choose a random spot.
-    auto move = Random::get_move(root, 0);
+    auto move = Minimax::get_move(root, depth);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
     
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
-    break; // might need to DELETE this
+    // depth += 2;
   }
 }
 
 
 /**
- * @brief Main function for player
+ * @brief Main function for minimax player
  * 
  * @param argv 
  * @return int 
  */
 int main(int, char** argv) {
-  srand(RANDOM_SEED);
   std::ifstream fin(argv[1]); // state
   std::ofstream fout(argv[2]); // action
 

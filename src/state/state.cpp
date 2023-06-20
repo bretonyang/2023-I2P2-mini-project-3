@@ -9,11 +9,18 @@
 /**
  * @brief evaluate the state
  * 
- * @return int 
+ * @return state value
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  return 0;
+  int value = 0;
+  for(int i = 0; i < BOARD_H; i++) {
+    for(int j = 0; j < BOARD_W; j++) {
+      value += material_value[(int) board.board[player][i][j]];
+      value -= material_value[(int) board.board[1 - player][i][j]];
+    }
+  }
+  return value;
 }
 
 
@@ -32,10 +39,11 @@ State* State::next_state(Move move){
   if(moved == 1 && (to.first==BOARD_H-1 || to.first==0)){
     moved = 5;
   }
+  // eat opponent's piece, and set that piece's position to empty in the oppo's board
   if(next.board[1-this->player][to.first][to.second]){
     next.board[1-this->player][to.first][to.second] = 0;
   }
-  
+  // move the piece in current player's board
   next.board[this->player][from.first][from.second] = 0;
   next.board[this->player][to.first][to.second] = moved;
   
