@@ -43,7 +43,7 @@ void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
   // output result from depth: 3, 5, 7, ... (if can be calculated in time)
   // Reason: avoid not outputting anything after exceeding the time limit.
-  int depth = 3; 
+  int depth = 4; 
   while(true) {
     auto move = Submission::get_move(root, depth);
     fout << move.first.first << " " << move.first.second << " "\
